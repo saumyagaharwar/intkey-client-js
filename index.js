@@ -1,9 +1,12 @@
 const { EnclaveFactory } = require('./enclave')
 const { SawtoothClientFactory } = require('./sawtooth-client')
+const XLSX = require('xlsx');
+const workbook = XLSX.readFile('Test.csv');
+
 const argv = require('yargs')
   .usage('Usage: node $0 --name [string] --verb [set,inc,dec] --value [integer]')
   .choices('verb', ['set', 'inc', 'dec'])
-  .number('value')
+  .string('value')
   .string(['verb', 'name'])
   .describe('name', 'unique identifier for the entry')
   .describe('verb', 'action to take on the entry')
@@ -32,11 +35,26 @@ const intkeyTransactor = intkeyClient.newTransactor({
   familyVersion: env.familyVersion
 })
 
+const sheet_name_list = workbook.SheetNames;
+var output = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet_name_list[0]])
+console.log(output);
+console.log(typeof output)
+
+var json_object = JSON.stringify(output);
+        console.log(json_object);
+console.log(typeof output)
+
+
 const newPayload = {
   Verb: argv.verb,
   Name: argv.name,
   Value: argv.value
 }
+
+function log(){
+console.log("Loaded script");
+}
+
 
 if (input.payloadIsValid(newPayload)) {
   input.submitPayload(newPayload, intkeyTransactor)

@@ -1,6 +1,6 @@
 const input = {
   payloadIsValid: (payload) => {
-    if (valueIsValid(payload.Value) && verbIsValid(payload.Verb) && nameIsValid(payload.Name)) return true
+    if (verbIsValid(payload.Verb) && nameIsValid(payload.Name)) return true
     else return false
   },
   submitPayload: async (payload, transactor) => {
@@ -43,8 +43,10 @@ const nameIsValid = (name) => {
 }
 
 const valueIsValid = (value) => {
-  if ((isInteger(value)) && (value >= 0) && (value < Math.pow(2, 32) - 1)) return true
-  else return false
+value.replace(/[\[\]']+/g, '');
+value.split(' ').join('')
+value = value + "";
+console.log(value)
 }
 
 module.exports = input
